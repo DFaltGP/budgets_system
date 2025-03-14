@@ -1,8 +1,9 @@
 <script lang="ts">
-    import { getContext } from 'svelte';
-    import { Pagination, type ToastContext } from '@skeletonlabs/skeleton-svelte';
+  import { getContext } from 'svelte';
+  import { Pagination, type ToastContext } from '@skeletonlabs/skeleton-svelte';
 
-    import Icon from "@iconify/svelte";
+  import Icon from "@iconify/svelte";
+  import Modal from './Modal.svelte';
 
   export const toast: ToastContext = getContext('toast');
 
@@ -62,6 +63,13 @@
             triggerError();
         }
     };
+
+    let isOpen = $state(false);
+    let productModalData: SourceData = $state({} as SourceData);
+    const openProductModal = (row) => {
+        productModalData = row;
+        isOpen = true;
+    };
 </script>
   
 <section class="space-y-4 rounded-lg p-12 border border-zinc-700 shadow-md">
@@ -91,7 +99,7 @@
     </thead>
     <tbody class="[&>tr]:hover:preset-tonal-primary">
         {#each slicedSource(sourceData) as row}
-        <tr>
+        <tr onclick={() => openProductModal(row)}>
             <td>{row.code}</td>
             <td>{row.description}</td>
             <td>{row.unit}</td>
@@ -126,3 +134,12 @@
     </Pagination>
 </footer>
 </section>
+
+<Modal isOpen={isOpen}>
+    <div class="relative flex flex-col gap-4 w-1/2 h-96 rounded-md p-4 bg-zinc-900">
+    <span>Este é o modal de produtos</span>
+        <button class="absolute top-4 right-4" onclick={() => isOpen = false}>
+            <Icon icon="lucide:octagon-x" font-size="24" class="hover:text-zinc-300 transition-colors"/>
+        </button>
+    </div>
+</Modal>
