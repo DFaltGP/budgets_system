@@ -4,6 +4,7 @@
 
   import Icon from "@iconify/svelte";
   import Modal from './Modal.svelte';
+  import Input from './ui/Input.svelte';
 
   export const toast: ToastContext = getContext('toast');
 
@@ -71,7 +72,7 @@
         isOpen = true;
     };
 </script>
-  
+<!-- Table -->
 <section class="space-y-4 rounded-lg p-12 border border-zinc-700 shadow-md">
 <!-- Tools Bar -->
 <div class="w-full flex items-center justify-between gap-4">
@@ -134,12 +135,48 @@
     </Pagination>
 </footer>
 </section>
-
+<!-- Products Modal -->
 <Modal isOpen={isOpen}>
-    <div class="relative flex flex-col gap-4 w-1/2 h-96 rounded-md p-4 bg-zinc-900">
-    <span>Este é o modal de produtos</span>
-        <button class="absolute top-4 right-4" onclick={() => isOpen = false}>
-            <Icon icon="lucide:octagon-x" font-size="24" class="hover:text-zinc-300 transition-colors"/>
+    <div class="relative flex flex-col gap-6 w-1/2 min-h-80 rounded-md p-6 bg-surface-900">
+        <!-- Título -->
+        <h2 class="text-xl font-semibold text-white">Adicionar Produto ao Carrinho</h2>
+
+        <!-- Informações principais -->
+        <div class="flex gap-6">
+            <div class="flex-1 flex flex-col gap-4">
+                <div>
+                    <span class="text-sm text-zinc-300">Descrição</span>
+                    <span class="text-xl font-semibold">{productModalData.description}</span>
+                </div>
+                <div>
+                    <span class="text-sm text-zinc-300">Preço</span>
+                    <span class="text-xl font-semibold text-green-400">{productModalData.price}</span>
+                </div>
+                <div class="flex gap-4">
+                    <Input label="Quantidade"/>
+                    <Input label="Margem de lucro"/>
+                </div>
+            </div>
+            <div class="flex-1 flex flex-col gap-4">
+                <div class="bg-zinc-800 p-3 rounded-md">
+                    <span class="text-sm text-zinc-300">Você compra por</span>
+                    <span class="text-xl font-semibold text-yellow-400">{productModalData.price}</span>
+                </div>
+                <div class="bg-zinc-800 p-3 rounded-md">
+                    <span class="text-sm text-zinc-300">Seu cliente paga</span>
+                    <span class="text-xl font-semibold text-green-400">{productModalData.price}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botão de ação -->
+        <button class="mt-auto bg-tertiary-600 hover:bg-tertiary-500 text-white font-semibold py-2 px-4 rounded-md">
+            Adicionar ao Orçamento
+        </button>
+
+        <!-- Botão de Fechar -->
+        <button onclick={() => isOpen = false} class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full hover:bg-zinc-700 transition">
+            <Icon icon="lucide:octagon-x" font-size="24" class="text-zinc-400 hover:text-zinc-300"/>
         </button>
     </div>
 </Modal>
